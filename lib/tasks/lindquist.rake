@@ -20,6 +20,11 @@ def get_lindquist_pid
 end
 
 namespace :burke do
+  task :pid do
+    ActiveFedora::Base.fedora_connection[0] ||= ActiveFedora::RubydoraConnection.new(ActiveFedora.config.credentials)
+    rubydora = ActiveFedora::Base.fedora_connection[0].connection
+    puts rubydora.next_pid(:namespace=>'ldpd')
+  end
   namespace :lindquist do
     desc "load a file of mods records"
     task :debug => :environment do
@@ -28,7 +33,7 @@ namespace :burke do
       BagAggregator.find('ldpd:130506').delete
     end
     task :reset => :environment do
-      pid = 'ac:123173'
+      pid = ENV['PID']
       dc_url = "https://sayers.cul.columbia.edu:8443/fedora/objects/#{pid}/datastreams/DC/content?asOfDateTime=2012-05-31T15:45:32.000Z"
       rels_ext_url = "https://sayers.cul.columbia.edu:8443/fedora/objects/#{pid}/datastreams/RELS-EXT/content?asOfDateTime=2012-05-31T15:45:32.000Z"
       obj = BagAggregator.find(pid)
