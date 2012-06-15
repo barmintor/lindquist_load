@@ -1,0 +1,94 @@
+<mods:modsCollection
+  xmlns:xlink="http://www.w3.org/1999/xlink" 
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns:mods="http://www.loc.gov/mods/v3" 
+  xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">
+<mods:mods>
+<mods:identifier type="local">burke_lindq_035_0024</mods:identifier>
+<mods:name type="personal" authority="NAF">
+  <mods:namePart>Lindquist, G. E. E. (Gustavus Elmer Emanuel), 1886-1967</mods:namePart>
+</mods:name>
+<mods:titleInfo>
+  <mods:title>Indian Nurses in Training at Ganado Hospital, Arizona</mods:title>
+</mods:titleInfo>
+<mods:originInfo>
+  <mods:dateCreated>1930-1953</mods:dateCreated>
+  <mods:dateCreated qualifier="approximate" keyDate="yes" encoding="w3cdtf" point="start">1930-00-00</mods:dateCreated>
+  <mods:dateCreated point="end" encoding="w3cdtf">1953-00-00</mods:dateCreated>
+</mods:originInfo>
+<mods:physicalDescription>
+  <mods:extent>3 1/2 x 5</mods:extent>
+  <mods:form authority="aat">photographs</mods:form>
+  <mods:digitalOrigin>reformatted digital</mods:digitalOrigin>
+  <mods:reformattingQuality>preservation</mods:reformattingQuality>
+</mods:physicalDescription>
+<mods:typeOfResource>still image</mods:typeOfResource>
+<mods:abstract>Verso annotation: Indian nurses in training at Ganado Hospital, Arizona</mods:abstract>
+<mods:note type="item">Item no. 0001</mods:note>
+<mods:subject>
+  <mods:name>
+    <mods:namePart>Sage Memorial Hospital (Ganado, Ariz.). School of Nursing</mods:namePart>
+  </mods:name>
+</mods:subject>
+<mods:subject>
+  <mods:name>
+    <mods:namePart>Ganado Mission (Ganado, Ariz.)</mods:namePart>
+  </mods:name>
+</mods:subject>
+<mods:subject authority="lcsh">
+  <mods:geographic>Ganado (Ariz.)</mods:geographic>
+</mods:subject>
+<mods:subject>
+  <mods:geographic>Arizona</mods:geographic>
+</mods:subject>
+<mods:subject authority="lcsh">
+  <mods:topic>Indian women</mods:topic>
+</mods:subject>
+<mods:subject authority="lcsh">
+  <mods:topic>Portraits, Group</mods:topic>
+</mods:subject>
+<mods:subject authority="lcsh">
+  <mods:topic>Navajo Indians--Missions</mods:topic>
+</mods:subject>
+<mods:subject authority="lcsh">
+  <mods:topic>Indian nurses</mods:topic>
+</mods:subject>
+<mods:relatedItem type="host" displayLabel="Collection">
+  <mods:titleInfo>
+    <mods:title>G.E.E. Lindquist Native American Collection</mods:title>
+  </mods:titleInfo>
+</mods:relatedItem>
+<mods:relatedItem type="host">
+  <mods:titleInfo>
+    <mods:title>Folder title: Arizona.</mods:title>
+  </mods:titleInfo>
+  <mods:note>Original folder no. 714</mods:note>
+</mods:relatedItem>
+<mods:relatedItem type="host">
+  <mods:titleInfo>
+    <mods:title>Group title: Ganado Mission Hospital</mods:title>
+  </mods:titleInfo>
+</mods:relatedItem>
+<mods:relatedItem type="host" displayLabel="Project">
+  <mods:titleInfo>
+    <mods:title>G.E.E. Lindquist Native American Photographs</mods:title>
+  </mods:titleInfo>
+  <mods:location>
+    <mods:url>http://lindquist.cul.columbia.edu</mods:url>
+  </mods:location>
+</mods:relatedItem>
+<mods:location>
+  <mods:physicalLocation type="code" authority="marcorg">NyNyCBL</mods:physicalLocation>
+  <mods:physicalLocation>Burke Library at Union Theological Seminary, Columbia University</mods:physicalLocation>
+  <mods:shelfLocator>Box no. 035</mods:shelfLocator>
+</mods:location>
+<mods:recordInfo>
+  <mods:recordContentSource authority="marcorg">NNC</mods:recordContentSource>
+  <mods:languageOfCataloging>
+    <mods:languageTerm type="code" authority="iso639-2b">eng</mods:languageTerm>
+  </mods:languageOfCataloging>
+  <mods:recordOrigin>Human created, edited in general conformance to the DLF Implementation Guidelines for Shareable MODS Records, Version 1.1.</mods:recordOrigin>
+</mods:recordInfo>
+
+</mods:mods>
+</mods:modsCollection>
