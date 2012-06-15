@@ -78,7 +78,8 @@ module Lindquist
           ca_obj.datastreams['descMetadata'].content = @mods.to_xml
           ca_obj.dc.dirty = true
           add_default_permissions(ca_obj)
-          ca_pid = ca_obj.save
+          ca_obj.save
+          ca_pid = ca_obj.pid
           collection_obj.add_member(ca_obj)
           puts "Created a ContentAggregator pid=#{ca_pid} dc:identifier=#{self.id}"
         else
@@ -86,6 +87,7 @@ module Lindquist
         end
       else 
         ca_obj = ContentAggregator.find(ca_pid)
+        Object.ensure_dc_field(ca_obj, :identifier, self.id)
         puts "Found a ContentAggregator pid=#{ca_pid} dc:identifier=#{self.id}"
         old_mods = ca_obj.datastreams['descMetadata'].content
         unless old_mods == @mods.to_xml
@@ -125,7 +127,7 @@ module Lindquist
           set_dc_format(r_obj,'image/tiff')
           r_obj.dc.dirty = true
           ds_opts = {:controlGroup => 'E', :mimeType=>'image/tiff',:dsLocation => 'file:' + resource_path,:label=>resource_path}
-          r_obj.create_datastream('CONTENT', ds_opts)
+          r_obj.create_datastream(ActiveFedora::Datastream,'CONTENT', ds_opts)
           add_default_permissions(r_obj)
           setImageProperties(r_obj)
           r_obj.save
@@ -135,6 +137,7 @@ module Lindquist
         end
       else
         r_obj = Resource.find(r_pid)
+        Object.ensure_dc_field(r_obj, :source, resource_path)
         puts "Found a Resource pid=#{r_pid} dc:source=#{resource_path}"
       end
       # - each of these paths represents an ImageAggregator as well as a (File) Resource
@@ -204,7 +207,14 @@ module Lindquist
       results = results.xpath('/f:result/f:resultList/f:objectFields/f:pid',{'f'=>"http://www.fedora.info/definitions/1/0/types/"})
       results.collect { |result| result.text }
     end
-    
+
+    def self.ensure_dc_field(obj, key, value)
+      values = obj.dc.term_values(key)
+      unless values.include? value
+        raise "#{obj.pid} DC does not contain #{key.to_s} value of #{value} : #{obj.dc}"
+      end
+    end
+
     private
     def add_default_permissions(obj)
       ds = obj.datastreams['rightsMetadata']

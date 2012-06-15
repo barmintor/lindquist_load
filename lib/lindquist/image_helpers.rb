@@ -1,5 +1,6 @@
 require 'uri'
 require 'open-uri'
+require 'tempfile'
 module Lindquist
   module ImageHelpers
     def setImageProperties(obj)
@@ -12,7 +13,12 @@ module Lindquist
           image_prop_nodes = Cul::Image::Properties.identify(blob).nodeset
         }
       else
-        image_prop_nodes = Cul::Image::Properties.identify(ds.content).nodeset
+        blob = Tempfile.new("blob")
+        blob.write(ds.content)
+        blob.close
+        blob.open
+        image_prop_nodes = Cul::Image::Properties.identify(blob).nodeset
+        blob.close unless blob.closed?
       end
       image_prop_nodes.each { |node|
         if node["resource"]
@@ -30,4 +36,5 @@ module Lindquist
         obj.relationships_are_dirty=true
       }
     end
+  end
 end

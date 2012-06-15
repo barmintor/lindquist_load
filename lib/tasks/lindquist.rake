@@ -75,6 +75,7 @@ namespace :burke do
             lo.find_or_create_fedora_object(:create_content=>true,:create_resource=>true)
           rescue Exception => e
             puts "Error creating objects for #{lo.id}: #{e.to_s}"
+            puts e.backtrace
           end
         end
       }
