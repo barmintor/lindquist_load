@@ -127,7 +127,6 @@ module Lindquist
           set_dc_format(r_obj,'image/tiff')
           r_obj.dc.dirty = true
           ds_opts = {:controlGroup => 'E', :mimeType=>'image/tiff',:dsLocation => 'file:' + resource_path,:label=>resource_path}
-          r_obj.create_datastream(ActiveFedora::Datastream,'CONTENT', ds_opts)
           add_default_permissions(r_obj)
           setImageProperties(r_obj)
           r_obj.save
@@ -142,6 +141,13 @@ module Lindquist
       end
       # - each of these paths represents an ImageAggregator as well as a (File) Resource
       unless r_obj.nil?
+        unless r_obj.datastreams['CONTENT']
+          ds = r_obj.create_datastream('CONTENT', ds_opts)
+          r_obj.add_datastream(ds)
+          r_obj.save
+          setImageProperties(r_obj)
+          r_obj.save
+        end
         sia_pid = r_obj.containers[0]
         # - for each tiff resource there should be a unique StaticImageAggregator
         if sia_pid.nil?
