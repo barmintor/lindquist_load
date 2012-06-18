@@ -135,7 +135,7 @@ module Lindquist
         end
       else
         r_obj = Resource.find(r_pid)
-        puts "Found a Resource pid=#{r_pid} dc:identifier=#{resource_path}"
+        puts "Found a Resource pid=#{r_pid} dc:source=#{resource_path}"
       end
       # - each of these paths represents an ImageAggregator as well as a (File) Resource
       unless r_obj.nil?
