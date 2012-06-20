@@ -75,6 +75,7 @@ module Lindquist
           set_dc_title(ca_obj,self.title)
           ca_obj.label= self.title
           ## - create descMetadata datastream if necessary, and assign its content = @mods.to_xml
+          @mods.default_namespace = 'http://www.loc.gov/mods/v3'
           ca_obj.datastreams['descMetadata'].content = @mods.to_xml
           ca_obj.dc.dirty = true
           add_default_permissions(ca_obj)
@@ -90,9 +91,12 @@ module Lindquist
         Object.ensure_dc_field(ca_obj, :identifier, self.id)
         puts "Found a ContentAggregator pid=#{ca_pid} dc:identifier=#{self.id}"
         old_mods = ca_obj.datastreams['descMetadata'].content
+        @mods.default_namespace = 'http://www.loc.gov/mods/v3'
         unless old_mods == @mods.to_xml
           ca_obj.datastreams['descMetadata'].content= @mods.to_xml
           ca_obj.save
+        else
+          ca_obj.send :update_index
         end
       end
       ## - find all the related resource paths
@@ -126,8 +130,11 @@ module Lindquist
           set_dc_title(r_obj,r_title)
           set_dc_format(r_obj,'image/tiff')
           r_obj.dc.dirty = true
-          ds_opts = {:controlGroup => 'E', :mimeType=>'image/tiff',:dsLocation => 'file:' + resource_path,:label=>resource_path}
           add_default_permissions(r_obj)
+          ds_opts = {:controlGroup => 'E', :mimeType=>'image/tiff',:dsLocation => 'file:' + resource_path,:label=>resource_path}
+          ds = r_obj.create_datastream(ActiveFedora::Datastream,'CONTENT', ds_opts)
+          r_obj.add_datastream(ds)
+          r_obj.save
           setImageProperties(r_obj)
           r_obj.save
           puts "Created a Resource pid=#{r_pid} dc:source=#{resource_path}"
@@ -142,15 +149,16 @@ module Lindquist
       # - each of these paths represents an ImageAggregator as well as a (File) Resource
       unless r_obj.nil?
         unless r_obj.datastreams['CONTENT']
-          ds = r_obj.create_datastream('CONTENT', ds_opts)
+          ds_opts = {:controlGroup => 'E', :mimeType=>'image/tiff',:dsLocation => 'file:' + resource_path,:label=>resource_path}
+          ds = r_obj.create_datastream(ActiveFedora::Datastream,'CONTENT', ds_opts)
           r_obj.add_datastream(ds)
           r_obj.save
-          setImageProperties(r_obj)
-          r_obj.save
         end
-        sia_pid = r_obj.containers[0]
+        setImageProperties(r_obj)
+        r_obj.save
+        sia_obj = r_obj.containers[0]
         # - for each tiff resource there should be a unique StaticImageAggregator
-        if sia_pid.nil?
+        if sia_obj.nil?
           # - create a new SIA, with title = CA title + " recto" or " verso" as appropriate
           sia_obj = StaticImageAggregator.new(:namespace=>'ldpd')
           image_id = self.id + "#{side_label.downcase}"
@@ -161,8 +169,6 @@ module Lindquist
           add_default_permissions(sia_obj)
           sia_obj.save
           sia_obj.add_member(r_obj)
-        else
-          sia_obj = StaticImageAggregator.find(sia_pid)
         end
         return sia_obj
       end

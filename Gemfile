@@ -3,8 +3,10 @@ source 'http://rubygems.org'
 gem 'rails', '~>3.2'
 
 gem 'blacklight', '~>3.4.0'
+gem 'om', :git=>'git://github.com/barmintor/om.git', :branch=>'hydra-351'
 gem 'hydra-head', '~>4.0.3'
-gem 'cul_scv_hydra'
+gem 'cul_image_props', '>=0.2.1'
+gem 'cul_scv_hydra', '>=0.5.1'
 gem 'devise_wind'
 
 # Bundle edge Rails instead:

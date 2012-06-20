@@ -65,7 +65,7 @@ namespace :burke do
       mods_list = get_mods_nodes
       images = File.new('fixtures/lindquist-images.txt')
       counter = 0
-      limit = 3
+      limit = -1
       mods_list.each { |mods_node|
         counter += 1
         if limit == -1 or counter < limit
