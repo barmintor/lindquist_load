@@ -96,7 +96,7 @@ module Lindquist
           ca_obj.datastreams['descMetadata'].content= @mods.to_xml
           ca_obj.save
         else
-          ca_obj.send :update_index
+          # ca_obj.send :update_index
         end
       end
       ## - find all the related resource paths
