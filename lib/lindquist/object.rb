@@ -155,22 +155,19 @@ module Lindquist
           r_obj.save
         end
         setImageProperties(r_obj)
+        image_id = self.id + "#{side_label.downcase}"
+        set_dc_identifier(r_obj,image_id)
         r_obj.save
-        sia_obj = r_obj.containers[0]
         # - for each tiff resource there should be a unique StaticImageAggregator
-        if sia_obj.nil?
+        r_obj.containers.each do |sia_obj|
           # - create a new SIA, with title = CA title + " recto" or " verso" as appropriate
-          sia_obj = StaticImageAggregator.new(:namespace=>'ldpd')
-          image_id = self.id + "#{side_label.downcase}"
-          set_dc_identifier(sia_obj,image_id)
-          image_title = "#{self.id} #{side_label} Image"
-          sia_obj.label = image_title
-          set_dc_title(sia_obj,image_title)
-          add_default_permissions(sia_obj)
-          sia_obj.save
-          sia_obj.add_member(r_obj)
+          sia_obj = DcDocument.find(sia_obj)
+          if ActiveFedora::ContentModel.known_models_for( sia_obj ).include? StaticImageAggregator
+            sia_obj = sia_obj.adapt_to StaticImageAggregator
+            sia_obj.remove_member(r_obj)
+          end
         end
-        return sia_obj
+        return r_obj
       end
       return nil
     end
