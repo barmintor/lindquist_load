@@ -119,7 +119,7 @@ module Lindquist
       r_pid = Object.find(:source => resource_path)[0]
       if r_pid.nil?
         unless opts[:create_resource] == false
-          r_obj = Resource.new(:namespace=>'ldpd')
+          r_obj = GenericResource.new(:namespace=>'ldpd')
           ### - assign DC metadata values:
           #### - dc:source = filepath
           #### - dc:title = filepath
@@ -129,28 +129,30 @@ module Lindquist
           r_obj.label = r_title
           set_dc_title(r_obj,r_title)
           set_dc_format(r_obj,'image/tiff')
+          set_dc_type('Image')
+          set_dc_coverage(side_label) if side_label
           r_obj.dc.dirty = true
           add_default_permissions(r_obj)
           ds_opts = {:controlGroup => 'E', :mimeType=>'image/tiff',:dsLocation => 'file:' + resource_path,:label=>resource_path}
-          ds = r_obj.create_datastream(ActiveFedora::Datastream,'CONTENT', ds_opts)
+          ds = r_obj.create_datastream(ActiveFedora::Datastream,'content', ds_opts)
           r_obj.add_datastream(ds)
           r_obj.save
           setImageProperties(r_obj)
           r_obj.save
-          puts "Created a Resource pid=#{r_pid} dc:source=#{resource_path}"
+          puts "Created a GenericResource pid=#{r_pid} dc:source=#{resource_path}"
         else
-          puts "Would have created a Resource dc:source=#{resource_path}"
+          puts "Would have created a GenericResource dc:source=#{resource_path}"
         end
       else
-        r_obj = Resource.find(r_pid)
+        r_obj = GenericResource.find(r_pid)
         Object.ensure_dc_field(r_obj, :source, resource_path)
-        puts "Found a Resource pid=#{r_pid} dc:source=#{resource_path}"
+        puts "Found a GenericResource pid=#{r_pid} dc:source=#{resource_path}"
       end
       # - each of these paths represents an ImageAggregator as well as a (File) Resource
       unless r_obj.nil?
-        unless r_obj.datastreams['CONTENT']
+        unless r_obj.datastreams['content']
           ds_opts = {:controlGroup => 'E', :mimeType=>'image/tiff',:dsLocation => 'file:' + resource_path,:label=>resource_path}
-          ds = r_obj.create_datastream(ActiveFedora::Datastream,'CONTENT', ds_opts)
+          ds = r_obj.create_datastream(ActiveFedora::Datastream,'content', ds_opts)
           r_obj.add_datastream(ds)
           r_obj.save
         end
