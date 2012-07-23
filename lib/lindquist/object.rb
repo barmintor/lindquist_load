@@ -161,10 +161,8 @@ module Lindquist
         # - for each tiff resource there should be a unique StaticImageAggregator
         r_obj.containers.each do |sia_obj|
           # - create a new SIA, with title = CA title + " recto" or " verso" as appropriate
-          sia_obj = DcDocument.find(sia_obj)
           if ActiveFedora::ContentModel.known_models_for( sia_obj ).include? StaticImageAggregator
-            sia_obj = sia_obj.adapt_to StaticImageAggregator
-            sia_obj.remove_member(r_obj)
+            r_obj.remove_relationship_by_name("containers", sia_obj)
           end
         end
         return r_obj
