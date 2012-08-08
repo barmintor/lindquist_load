@@ -43,7 +43,7 @@ module Lindquist
     end
     
     def file_pattern
-      @pattern ||= Regexp.compile("#{DATA_PATH}Lindquist_box_#{box}/#{id}[rv]\.tif")
+      @pattern ||= Regexp.compile("#{DATA_PATH}.+/#{id}[rv]\.tif$")
     end
     
     def resource_paths
@@ -150,7 +150,7 @@ module Lindquist
       end
       # - each of these paths represents an ImageAggregator as well as a (File) Resource
       unless r_obj.nil?
-        unless r_obj.datastreams['content']
+        unless r_obj.datastreams['content'] and r_obj.datastreams['content'].dsLocation == 'file:' + resource_path
           ds_opts = {:controlGroup => 'E', :mimeType=>'image/tiff',:dsLocation => 'file:' + resource_path,:label=>resource_path}
           ds = r_obj.create_datastream(ActiveFedora::Datastream,'content', ds_opts)
           r_obj.add_datastream(ds)
