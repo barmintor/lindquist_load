@@ -129,8 +129,8 @@ module Lindquist
           r_obj.label = r_title
           set_dc_title(r_obj,r_title)
           set_dc_format(r_obj,'image/tiff')
-          set_dc_type('Image')
-          set_dc_coverage(side_label) if side_label
+          set_dc_type(r_obj,'Image')
+          set_dc_coverage(r_obj,side_label) if side_label
           r_obj.dc.dirty = true
           add_default_permissions(r_obj)
           ds_opts = {:controlGroup => 'E', :mimeType=>'image/tiff',:dsLocation => 'file:' + resource_path,:label=>resource_path}
